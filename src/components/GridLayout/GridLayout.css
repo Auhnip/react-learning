@@ -1,12 +1,14 @@
-.grid-layout__container {
-  display: grid;
-  width: 100%;
-  height: 100%;
-  gap: 0;
-  overflow: hidden;
+@charset "utf-8";
+
+.grid-layout {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    gap: 0;
+    overflow: hidden;
 }
 
-.grid-layout__inner-item {
-  overflow: hidden;
-  box-sizing: border-box;
+.grid-layout_container {
+    overflow: hidden;
+    box-sizing: border-box;
 }
