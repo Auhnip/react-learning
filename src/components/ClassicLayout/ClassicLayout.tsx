@@ -14,61 +14,47 @@ interface LayoutComponents {
 }
 
 const ClassicLayout = ({ children }: IProps) => {
-  const [components, setComponents] = React.useState<LayoutComponents>({});
+  const components: LayoutComponents = {};
 
   React.Children.forEach(children, (child) => {
-    const newComponents = { ...components };
-
     if (React.isValidElement(child)) {
       switch (child.type) {
         case ClassicLayout.Header:
-          newComponents.header = child;
+          components.header = child;
           break;
         case ClassicLayout.LeftSidebar:
-          newComponents.leftSidebar = child;
+          components.leftSidebar = child;
           break;
         case ClassicLayout.RightSidebar:
-          newComponents.rightSidebar = child;
+          components.rightSidebar = child;
           break;
         case ClassicLayout.Content:
-          newComponents.content = child;
+          components.content = child;
           break;
         case ClassicLayout.Footer:
-          newComponents.footer = child;
+          components.footer = child;
           break;
       }
     }
-
-    setComponents(newComponents);
   });
 
   return (
     <div className='classic-layout'>
-      <header className='classic-layout_header'>
-        {!!components.header && components.header}
-      </header>
+      {components.header}
       <div className='classic-layout_main-body'>
-        <aside className='classic-layout_left-sidebar'>
-          {!!components.leftSidebar && components.leftSidebar}
-        </aside>
-        <div className='classic-layout_content'>
-          {!!components.content && components.content}
-        </div>
-        <aside className='classic-layout_right-sidebar'>
-          {!!components.rightSidebar && components.rightSidebar}
-        </aside>
+        {components.leftSidebar}
+        {components.content}
+        {components.rightSidebar}
       </div>
-      <footer className='classic-layout_footer'>
-        {!!components.footer && components.footer}
-      </footer>
+      {components.footer}
     </div>
   );
 };
 
-ClassicLayout.Header = LayoutComponentFactory('Header');
-ClassicLayout.LeftSidebar = LayoutComponentFactory('LeftSidebar');
-ClassicLayout.Content = LayoutComponentFactory('Content');
-ClassicLayout.RightSidebar = LayoutComponentFactory('RightSidebar');
-ClassicLayout.Footer = LayoutComponentFactory('Footer');
+ClassicLayout.Header = LayoutComponentFactory('header', 'header');
+ClassicLayout.LeftSidebar = LayoutComponentFactory('aside', 'left-sidebar');
+ClassicLayout.Content = LayoutComponentFactory('section', 'content');
+ClassicLayout.RightSidebar = LayoutComponentFactory('aside', 'right-sidebar');
+ClassicLayout.Footer = LayoutComponentFactory('footer', 'footer');
 
 export default ClassicLayout;
