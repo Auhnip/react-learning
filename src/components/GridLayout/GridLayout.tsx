@@ -174,7 +174,7 @@ class GridLayout extends React.Component<Props, State> {
       };
 
       return (
-        <div className='grid-layout_container' style={itemStyle}>
+        <div className='grid-layout-container' style={itemStyle}>
           {child}
         </div>
       );

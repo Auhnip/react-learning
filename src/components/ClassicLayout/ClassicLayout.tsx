@@ -41,7 +41,7 @@ const ClassicLayout = ({ children }: IProps) => {
   return (
     <div className='classic-layout'>
       {components.header}
-      <div className='classic-layout_main-body'>
+      <div className='classic-layout-main-body'>
         {components.leftSidebar}
         {components.content}
         {components.rightSidebar}

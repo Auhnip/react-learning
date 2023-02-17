@@ -5,10 +5,10 @@ interface PropsWithChildren {
 }
 
 function LayoutComponentFactory(
-  tag: 'header' | 'aside' | 'section' | 'footer',
+  tag: keyof JSX.IntrinsicElements,
   classNameSuffix: string
 ) {
-  const LayoutComponent = ({ children }: PropsWithChildren) => {
+  return ({ children }: PropsWithChildren) => {
     const ComponentName = tag;
     return (
       <ComponentName className={`classic-layout-${classNameSuffix}`}>
@@ -16,8 +16,6 @@ function LayoutComponentFactory(
       </ComponentName>
     );
   };
-
-  return LayoutComponent;
 }
 
 export default LayoutComponentFactory;
