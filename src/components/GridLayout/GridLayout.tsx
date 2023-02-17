@@ -1,7 +1,28 @@
 import React from 'react';
 import './GridLayout.css';
 
-const GridLayoutHelper = {
+interface Distance {
+  start: number;
+  end: number;
+}
+
+type Positions = { row: Distance; col: Distance }[];
+
+interface Props {
+  positions: Positions;
+  children: React.ReactNode;
+}
+
+interface State {
+  rows: number;
+  columns: number;
+}
+
+interface Helper {
+  [layoutName: string]: Positions;
+}
+
+const GridLayoutHelper: Helper = {
   LeftSideBarLayout: [
     // header
     {
@@ -100,25 +121,19 @@ const GridLayoutHelper = {
   ],
 };
 
-class GridLayout extends React.Component {
-  constructor(props) {
+class GridLayout extends React.Component<Props, State> {
+  static defaultProps = {
+    positions: GridLayoutHelper.SimpleLayout,
+  };
+
+  constructor(props: Props) {
     super(props);
 
-    // use simple layout default
-    const { positions = GridLayoutHelper.SimpleLayout } = props;
-
-    this.state = {
-      positions,
-      ...this.getRowsAndColumns(positions),
-    };
+    this.state = this.getRowsAndColumns(this.props.positions);
   }
 
-  getRowsAndColumns(positions) {
-    if (!positions) {
-      return null;
-    }
-
-    const colomns =
+  getRowsAndColumns(positions: Positions) {
+    const columns =
       positions.reduce((prev, cur) => {
         return Math.max(prev, cur.col.end);
       }, 0) + 1;
@@ -129,13 +144,13 @@ class GridLayout extends React.Component {
       }, 0) + 1;
 
     return {
-      colomns,
       rows,
+      columns,
     };
   }
 
   // transform coordinate to adapt to css grid layout
-  transformAxis({ row, col }) {
+  transformAxis({ row, col }: { row: Distance; col: Distance }) {
     return {
       row: { start: row.start + 1, end: row.end + 2 },
       col: { start: col.start + 1, end: col.end + 2 },
@@ -143,8 +158,7 @@ class GridLayout extends React.Component {
   }
 
   getGridItems() {
-    const { positions } = this.state;
-    const { children } = this.props;
+    const { positions, children } = this.props;
     let positionIndex = 0;
 
     const gridItems = React.Children.map(children, (child) => {
@@ -154,7 +168,7 @@ class GridLayout extends React.Component {
 
       const { row, col } = this.transformAxis(positions[positionIndex++]);
 
-      const itemStyle = {
+      const itemStyle: React.CSSProperties = {
         gridRow: `${row.start} / ${row.end}`,
         gridColumn: `${col.start} / ${col.end}`,
       };
@@ -170,10 +184,10 @@ class GridLayout extends React.Component {
   }
 
   render() {
-    const containerStyle = {
+    const containerStyle: React.CSSProperties = {
       gridTemplate:
         `repeat(${this.state.rows}, minmax(0, 1fr))` +
-        ` / repeat(${this.state.colomns}, minmax(0, 1fr))`,
+        ` / repeat(${this.state.columns}, minmax(0, 1fr))`,
     };
 
     return (
