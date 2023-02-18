@@ -1,5 +1,10 @@
 import * as React from 'react';
-import LayoutComponentFactory from './LayoutComponentFactory';
+import layoutComponentFactory, {
+  type allowHideComponent,
+  type normalComponent,
+} from './layoutComponentCreator';
+
+import './ClassicLayout.css';
 
 interface IProps {
   children: React.ReactNode;
@@ -51,10 +56,31 @@ const ClassicLayout = ({ children }: IProps) => {
   );
 };
 
-ClassicLayout.Header = LayoutComponentFactory('header', 'header');
-ClassicLayout.LeftSidebar = LayoutComponentFactory('aside', 'left-sidebar');
-ClassicLayout.Content = LayoutComponentFactory('section', 'content');
-ClassicLayout.RightSidebar = LayoutComponentFactory('aside', 'right-sidebar');
-ClassicLayout.Footer = LayoutComponentFactory('footer', 'footer');
+ClassicLayout.Header = layoutComponentFactory(
+  'header',
+  'header'
+) as normalComponent;
+
+ClassicLayout.LeftSidebar = layoutComponentFactory(
+  'aside',
+  'left-sidebar',
+  'left'
+) as allowHideComponent;
+
+ClassicLayout.Content = layoutComponentFactory(
+  'section',
+  'content'
+) as normalComponent;
+
+ClassicLayout.RightSidebar = layoutComponentFactory(
+  'aside',
+  'right-sidebar',
+  'right'
+) as allowHideComponent;
+
+ClassicLayout.Footer = layoutComponentFactory(
+  'footer',
+  'footer'
+) as normalComponent;
 
 export default ClassicLayout;
